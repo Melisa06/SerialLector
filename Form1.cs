@@ -33,8 +33,9 @@ namespace BunthiV5
         FolderBrowserDialog folderBrowse = new FolderBrowserDialog();
         private string ruta;
          
+         
 /*
- * Contructor 
+ * Constructor 
  */
         public Form1()
         {
@@ -83,7 +84,7 @@ namespace BunthiV5
          *datos por mediante de comas 
          */
         private void AccesoForm(string accion) { 
-        if (ComparacionTiempo(new TimeSpan(1,1,0))){
+        if (ComparacionTiempo(new TimeSpan(0,1,0))){
             try {
                 strBufferIn = accion; 
                 //En esta parte se hara la separación de datos. 
