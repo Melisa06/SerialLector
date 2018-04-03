@@ -32,7 +32,11 @@ namespace BunthiV5
         //Variables para asignar la ruta donde se guardará el archivo a generar. 
         FolderBrowserDialog folderBrowse = new FolderBrowserDialog();
         private string ruta;
-         
+        //variables para asignar un tiempo manualmente. 
+        //Variables de Tiempo
+        private string tiempoEspera;
+        private TimeSpan time = new System.TimeSpan();
+      
          
 /*
  * Constructor 
@@ -40,6 +44,18 @@ namespace BunthiV5
         public Form1()
         {
             InitializeComponent();
+            //tiempos de espera para tomar los datos
+            cmbTiempo.Items.Add(time = new TimeSpan(0, 0, 1));
+            cmbTiempo.Items.Add(time = new TimeSpan(0, 0, 5));
+            cmbTiempo.Items.Add(time = new TimeSpan(0, 0, 10));
+            cmbTiempo.Items.Add(time = new TimeSpan(0, 0, 20));
+            cmbTiempo.Items.Add(time = new TimeSpan(0, 0, 30));
+            cmbTiempo.Items.Add(time = new TimeSpan(0, 0, 40));
+            cmbTiempo.Items.Add(time = new TimeSpan(0, 0, 50));
+            cmbTiempo.Items.Add(time = new TimeSpan(0, 1, 0));
+            cmbTiempo.Items.Add(time = new TimeSpan(0, 5, 0));
+            cmbTiempo.Items.Add(time = new TimeSpan(0, 10, 0));
+            
         }
 
 //-----------------GET´S Y SET´S 
@@ -84,7 +100,7 @@ namespace BunthiV5
          *datos por mediante de comas 
          */
         private void AccesoForm(string accion) { 
-        if (ComparacionTiempo(new TimeSpan(0,1,0))){
+        if (ComparacionTiempo(new TimeSpan(time))){
             try {
                 strBufferIn = accion; 
                 //En esta parte se hara la separación de datos. 
@@ -310,7 +326,23 @@ namespace BunthiV5
             txtUbicaciónArchivo.Text = saveFileDialog1.FileName;
         }
 
-        
+        //----------ComboBox para cambiar el tiempo de espera de datos 
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+
+            try
+            {
+
+
+            }
+
+            catch (Exception exe) { }
+
+        }
+
+
+
 
 
 
