@@ -16,6 +16,7 @@ namespace BunthiV5
 {
     public partial class Form1 : Form
     {
+
         //Variables a usar 
         //Este es un list privado para que siempre tenga los valores sea cual sea la acción que se realice
         //O al menos en esta clase
@@ -28,19 +29,17 @@ namespace BunthiV5
         //Variable para la fecha actual
         private DateTime fecha = DateTime.Now;
         //Variable para el tiempo a comparar 
-        private TimeSpan aumentoTiempo =  new TimeSpan(0,1,0);
+        private TimeSpan aumentoTiempo = new TimeSpan(0, 0, 0);
         //Variables para asignar la ruta donde se guardará el archivo a generar. 
         FolderBrowserDialog folderBrowse = new FolderBrowserDialog();
         private string ruta;
-        //variables para asignar un tiempo manualmente. 
         //Variables de Tiempo
         private string tiempoEspera;
         private TimeSpan time = new System.TimeSpan();
-      
-         
-/*
- * Constructor 
- */
+
+        /*
+         * Contructor 
+         */
         public Form1()
         {
             InitializeComponent();
@@ -55,11 +54,13 @@ namespace BunthiV5
             cmbTiempo.Items.Add(time = new TimeSpan(0, 1, 0));
             cmbTiempo.Items.Add(time = new TimeSpan(0, 5, 0));
             cmbTiempo.Items.Add(time = new TimeSpan(0, 10, 0));
-            
+
+
+
+
         }
 
-//-----------------GET´S Y SET´S 
-
+        //-----------------GET´S Y SET´S 
         public class Datos
         {
             public string Caja1 { get; set; }
@@ -73,25 +74,23 @@ namespace BunthiV5
         }
 
         //-------------------------METODOS A UTILIZAR ---------------------------
-
         /*
-         *Este metodo nos sirve para comparar los minutos asignados en aumentoTiempo
-         *contra los que estan pasando en tiempo real 
-         */
+        *Este metodo nos sirve para comparar los minutos asignados en aumentoTiempo
+        *contra los que estan pasando en tiempo real 
+        */
         public bool ComparacionTiempo(TimeSpan aumento)
         {
 
-            if ((fecha + aumentoTiempo).ToString("mm") == DateTime.Now.ToString("mm"))
+            if ((fecha + time).ToString("mm:ss") == DateTime.Now.ToString("mm:ss"))
             {
 
-                fecha = fecha + aumentoTiempo;
+                fecha = fecha + time;
 
                 return true;
             }
 
-            else return false; 
+            else return false;
         }//cierra Metodo ComparacionTiempo
-
 
         /*
          *Primer metodo para dar acceso al 
@@ -99,82 +98,83 @@ namespace BunthiV5
          *En este metodo además se harála separación de 
          *datos por mediante de comas 
          */
-        private void AccesoForm(string accion) { 
-        if (ComparacionTiempo(new TimeSpan(time))){
-            try {
-                strBufferIn = accion; 
-                //En esta parte se hara la separación de datos. 
+        private void AccesoForm(string accion)
+        {
+            if (ComparacionTiempo(time))
+            {
+                try
+                {
+                    strBufferIn = accion;
+                    //En esta parte se hara la separación de datos. 
 
-                string caja1, caja2, caja3, caja4, temp, lum; 
+                    string caja1, caja2, caja3, caja4, temp, lum;
 
-                //Se hace un array el cual se separa con la (,)para eso funciona la herramienta split 
-               //(Puede ser cualquier parametro desde una palabra hasta caracteres especiales en un orden especifico)
+                    //Se hace un array el cual se separa con la (,)para eso funciona la herramienta split 
+                    //(Puede ser cualquier parametro desde una palabra hasta caracteres especiales en un orden especifico)
 
-                string[] subStrings = accion.Split(',');
-                caja1 = subStrings[0];
-                caja2 = subStrings[1];
-                caja3 = subStrings[2];
-                caja4 = subStrings[3];
-                temp = subStrings[4];
-                lum= subStrings[5];
-                //Hacemos que el txtDatoRecibido tome los valores del buffer que entra  
-                txtDatoRecibido.Text = accion; 
-                //Después se limpia el bufferin 
-                serialPort1.DiscardInBuffer();
+                    string[] subStrings = accion.Split(',');
+                    caja1 = subStrings[0];
+                    caja2 = subStrings[1];
+                    caja3 = subStrings[2];
+                    caja4 = subStrings[3];
+                    temp = subStrings[4];
+                    lum = subStrings[5];
+                    //Hacemos que el txtDatoRecibido tome los valores del buffer que entra  
+                    txtDatoRecibido.Text = accion;
+                    //Después se limpia el bufferin 
+                    serialPort1.DiscardInBuffer();
 
-                Datos datosNuevos = new Datos();
+                    Datos datosNuevos = new Datos();
 
-                datosNuevos.Caja1 = caja1;
-                datosNuevos.Caja2 = caja2;
-                datosNuevos.Caja3 = caja3;
-                datosNuevos.Caja4 = caja4;
-                datosNuevos.Temp = temp;
-                datosNuevos.Lum = lum;
-                datosNuevos.Fecha = DateTime.Now.ToShortDateString();
-                datosNuevos.Hora = DateTime.Now.ToLongTimeString();
-                LeerDatos(datosNuevos);
-                //Este metodo ingresa datos al gridView y lo agrega, no se puede poner un objeto, se tiene que poner separado por comas
-                //Asi separamos el objeto actual en los elementos separados
-                dataGridView1.Rows.Add(datosNuevos.Caja1,datosNuevos.Caja2,datosNuevos.Caja3,datosNuevos.Caja4, datosNuevos.Temp,datosNuevos.Lum
-                  +  datosNuevos.Fecha, datosNuevos.Hora);
+                    datosNuevos.Caja1 = caja1;
+                    datosNuevos.Caja2 = caja2;
+                    datosNuevos.Caja3 = caja3;
+                    datosNuevos.Caja4 = caja4;
+                    datosNuevos.Temp = temp;
+                    datosNuevos.Lum = lum;
+                    datosNuevos.Fecha = DateTime.Now.ToShortDateString();
+                    datosNuevos.Hora = DateTime.Now.ToLongTimeString();
+                    LeerDatos(datosNuevos);
+                    //Este metodo ingresa datos al gridView y lo agrega, no se puede poner un objeto, se tiene que poner separado por comas
+                    //Asi separamos el objeto actual en los elementos separados
+                    dataGridView1.Rows.Add(datosNuevos.Caja1, datosNuevos.Caja2, datosNuevos.Caja3, datosNuevos.Caja4, datosNuevos.Temp, datosNuevos.Lum
+                      + datosNuevos.Fecha, datosNuevos.Hora);
+                }
+
+                catch (Exception ex) { MessageBox.Show(ex.Message.ToString()); }
             }
 
-            catch (Exception ex) { MessageBox.Show(ex.Message.ToString()); }
         }
-
-        }
-
 
         /*
-         * Metodo para asignar datos en el form 
-        */
+        * Metodo para asignar datos en el form 
+       */
 
-        private void AccesoInterrumpcion( string accion) {
+        private void AccesoInterrumpcion(string accion)
+        {
 
-            try {
-
+            try
+            {
                 DelegadoAcceso var_Da;
                 var_Da = new DelegadoAcceso(AccesoForm);
 
-
-                object[] arg = {  accion};
+                object[] arg = { accion };
                 base.Invoke(var_Da, arg);
 
             }
-
-
             catch (Exception e) { MessageBox.Show(e.Message.ToString()); }
         }
 
         /*
-         * Metodo para leer datos e insertarlos en el TXT 
-         * Este metodo es uno de los más importantes 
-         */
-        public void LeerDatos(Datos datoRecibido) { 
-        //a la variable ruta le asignamos 
-         //el valor de lo que tome el txt 
+                * Metodo para leer datos e insertarlos en el TXT 
+                * Este metodo es uno de los más importantes 
+                */
+        public void LeerDatos(Datos datoRecibido)
+        {
+            //a la variable ruta le asignamos 
+            //el valor de lo que tome el txt 
 
-            ruta = txtUbicaciónArchivo.Text; 
+            ruta = txtUbicaciónArchivo.Text;
             //Lo primero que hace este metodo es agregar el dato a la lista. 
             datosTxt.Add(datoRecibido);
             //Después la lista se pasa en reversa 
@@ -188,24 +188,26 @@ namespace BunthiV5
             sw.WriteLine("|Caja 1       | Caja 2      |  Caja 3     |  Caja 4     | TEMPERATURA | LUMINOSIDAD |    FECHA   |    HORA     |");
             sw.WriteLine("+-------------+-------------+-------------+-------------+-------------+-------------+------------+-------------+");
             //Creamos un foreach para recorrer la lista inversa y separar los datos del mismo
-           foreach(var dato in datosTxt){
+            foreach (var dato in datosTxt)
+            {
 
-               string espaciado = ""; 
-               //Caada valor separado agrega  auna linea en el archivo
-               for (int i = 0; i < 13 - (dato.Temp.Length + 1); i++ )
-               {
-                   espaciado = espaciado + "";
-                   sw.WriteLine("|" + espaciado + dato.Caja1 + "|" + espaciado
-                        + dato.Caja2 + "|" + espaciado + dato.Caja3 + "|" + espaciado + dato.Caja4 + "|" 
-                        + espaciado + dato.Temp + " |" + espaciado + dato.Lum + "," + "|" + dato.Fecha + "," + "|" + dato.Hora + "|");
-               }
-               sw.WriteLine("+-------------+-------------+-------------+-------------+-------------+-------------+-------------+-------------+");
-               //Cerramos el motor para que se guarden los cambios en el archivo
-               sw.Close();
-               //Volvemos a invertir la lista para que el siguiente dato sigua la linea de la lista correctamente
-               datosTxt.Reverse();
-           }
+                string espaciado = "";
+                //Caada valor separado agrega  auna linea en el archivo
+                for (int i = 0; i < 13 - (dato.Temp.Length + 1); i++)
+                {
+                    espaciado = espaciado + "";
+                    sw.WriteLine("|" + espaciado + dato.Caja1 + "|" + espaciado
+                         + dato.Caja2 + "|" + espaciado + dato.Caja3 + "|" + espaciado + dato.Caja4 + "|"
+                         + espaciado + dato.Temp + " |" + espaciado + dato.Lum + "," + "|" + dato.Fecha + "," + "|" + dato.Hora + "|");
+                }
+                sw.WriteLine("+-------------+-------------+-------------+-------------+-------------+-------------+-------------+-------------+");
+                //Cerramos el motor para que se guarden los cambios en el archivo
+                sw.Close();
+                //Volvemos a invertir la lista para que el siguiente dato sigua la linea de la lista correctamente
+                datosTxt.Reverse();
+            }
         }
+
         //--------------------FUNCIONES DEL FORM Y BOTONES-------------------------- 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -213,16 +215,16 @@ namespace BunthiV5
             btnConectar.Enabled = false;
         }
 
-
         //Función del botón buscar puertos
         private void btnBuscarPuertos_Click(object sender, EventArgs e)
         {
             //En un arreglo se guardan los puertos disponibles 
 
-            string [] PuertosDisponibles  = SerialPort.GetPortNames();
-            cmbBuscarPuertos.Items.Clear(); 
+            string[] PuertosDisponibles = SerialPort.GetPortNames();
+            cmbBuscarPuertos.Items.Clear();
 
-            foreach(string puerto in PuertosDisponibles){
+            foreach (string puerto in PuertosDisponibles)
+            {
                 //Al comboBox de Puertos le agregamos los intems encontrados por elprimer 
                 //SerialPort.GetPortNames()
                 cmbBuscarPuertos.Items.Add(puerto);
@@ -239,7 +241,8 @@ namespace BunthiV5
             }
             //si no se encuentra ningún puerto activo 
             //hace lo siguiente 
-            else {
+            else
+            {
                 MessageBox.Show("Ningún Puerto Seleccionado");
                 cmbBuscarPuertos.Items.Clear();
                 cmbBuscarPuertos.Text = "";
@@ -247,43 +250,45 @@ namespace BunthiV5
 
             }
         }//cierra funciones del botón de buscar puertos 
-
+        //------FUNCIÓN DEL BOTÓN CONECTAR 
         private void btnConectar_Click(object sender, EventArgs e)
         {
-             if (btnConectar.Text == "CONECTAR")
-                {
-            //datos necesarios para hacer conexión con el puerto serial
-            serialPort1.BaudRate = 9600;
-            serialPort1.DataBits = 8;
-            serialPort1.Parity = Parity.None;
-            serialPort1.StopBits = StopBits.One;
-            serialPort1.Encoding = Encoding.ASCII;
-            serialPort1.PortName = cmbBuscarPuertos.Text;
-            //Después establecemos un intervalo de tiempo para que 
-            //comiencen algunas funciones 
-            timer1.Interval = 10000;
-            timer1.Enabled = true;
-            //Después de establecer todos esos parametros se abre el puerto
-            // serial 
-            serialPort1.Open();
-            //Después de conectar hacemos que se mande el número 1 
-            // para recibir el primer dato
-            serialPort1.Write("1");
+            if (btnConectar.Text == "CONECTAR")
+            {
+                //datos necesarios para hacer conexión con el puerto serial
+                serialPort1.BaudRate = 9600;
+                serialPort1.DataBits = 8;
+                serialPort1.Parity = Parity.None;
+                serialPort1.StopBits = StopBits.One;
+                serialPort1.Encoding = Encoding.ASCII;
+                serialPort1.PortName = cmbBuscarPuertos.Text;
+                //Después establecemos un intervalo de tiempo para que 
+                //comiencen algunas funciones 
+                timer1.Interval = 10000;
+                timer1.Enabled = true;
+                //Después de establecer todos esos parametros se abre el puerto
+                // serial 
+                serialPort1.Open();
+                //Después de conectar hacemos que se mande el número 1 
+                // para recibir el primer dato
+                serialPort1.Write("1");
 
-            //Mandamos llamar el metodo de accesoInterrumpción 
-            //para recibir el primer dato tomado por el puerto serial
-            AccesoInterrumpcion(serialPort1.ReadExisting());
-           //Posteriormente generamos un try y un catch en 
-            //donde se hacen otra acciones 
-            try {
-                btnConectar.Text = "DESCONECTAR";
-                //Lo que se hace es tomar toda la fecha, dia/mes/año hh:mm:ss por cualquier cosa que quieras hacer despues
-                //Luego lo que hago es separar esa fecha en solo los minutos para comenzar a hacer el contador 
-                fecha = DateTime.Now;
+                //Mandamos llamar el metodo de accesoInterrumpción 
+                //para recibir el primer dato tomado por el puerto serial
+                AccesoInterrumpcion(serialPort1.ReadExisting());
+                //Posteriormente generamos un try y un catch en 
+                //donde se hacen otra acciones 
+                try
+                {
+                    btnConectar.Text = "DESCONECTAR";
+                    //Lo que se hace es tomar toda la fecha, dia/mes/año hh:mm:ss por cualquier cosa que quieras hacer despues
+                    //Luego lo que hago es separar esa fecha en solo los minutos para comenzar a hacer el contador 
+                    fecha = DateTime.Now;
+                }
+                catch (Exception ex) { MessageBox.Show(ex.Message.ToString()); }
             }
-            catch (Exception ex) { MessageBox.Show(ex.Message.ToString()); }
-             }
-            else if (btnConectar.Text == "DESCONECTAR"){
+            else if (btnConectar.Text == "DESCONECTAR")
+            {
                 serialPort1.Close();
                 btnConectar.Text = "CONECTAR";
             }
@@ -291,7 +296,8 @@ namespace BunthiV5
         //Función del puerto serial 
         private void serialPort1_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
-            try {
+            try
+            {
                 /*
                  Con el thread sleep lo que se hace es que el puerto 
                  * serial se duerma por un rato para que reciba todos los 
@@ -304,16 +310,30 @@ namespace BunthiV5
             catch (Exception EX) { MessageBox.Show(EX.Message.ToString()); }
         }//cierra funciones delpuerto serial 
 
-        //---------función del Timer 
+        //función para agregar el timer 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            timer1.Start();
-            if((fecha + aumentoTiempo).ToString("mm") == DateTime.Now.ToString("mm")){
-            
-                serialPort1.Write("1");
-                serialPort1.DiscardOutBuffer();
+            try
+            {
+                timer1.Enabled = true;
+                lblTiempo.Text = DateTime.Now.ToLongTimeString();
+
+                timer1.Start();
+                if ((fecha + aumentoTiempo).ToString("mm:ss") == DateTime.Now.ToString("mm:ss"))
+                {
+
+                    serialPort1.Write("1");
+                    serialPort1.DiscardOutBuffer();
+
+                }
             }
-        }//cierra función del timer
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("Truena por el minuto" + ex);
+            }
+
+        }
+
         //-----------Función del botón guardar archivo 
         private void btnBrowse_Click(object sender, EventArgs e)
         {
@@ -326,27 +346,6 @@ namespace BunthiV5
             txtUbicaciónArchivo.Text = saveFileDialog1.FileName;
         }
 
-        //----------ComboBox para cambiar el tiempo de espera de datos 
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-
-            try
-            {
-
-
-            }
-
-            catch (Exception exe) { }
-
-        }
-
-
-
-
-
-
-
-
     }
 }
+
